@@ -30,7 +30,10 @@ uniform float u_fade_change;
 uniform vec2 u_texsize;
 
 varying vec2 v_data0;
-varying vec3 v_data1;
+varying vec2 v_data1;
+
+varying lowp vec4 v_fill_color;
+varying lowp vec4 v_halo_color;
 
 #pragma mapbox: define highp vec4 fill_color
 #pragma mapbox: define highp vec4 halo_color
@@ -111,5 +114,9 @@ void main() {
     float interpolated_fade_opacity = max(0.0, min(1.0, fade_opacity[0] + fade_change));
 
     v_data0 = a_tex / u_texsize;
-    v_data1 = vec3(gamma_scale, size, opacity * interpolated_fade_opacity);
+    v_data1 = vec2(gamma_scale, size);
+
+    float combined_opacity = opacity * interpolated_fade_opacity;
+    v_fill_color = fill_color * combined_opacity;
+    v_halo_color = halo_color * combined_opacity;
 }

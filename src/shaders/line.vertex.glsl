@@ -19,6 +19,8 @@ varying vec2 v_width2;
 varying float v_gamma_scale;
 varying highp float v_linesofar;
 
+varying mediump vec4 v_color;
+
 #pragma mapbox: define highp vec4 color
 #pragma mapbox: define lowp float blur
 #pragma mapbox: define lowp float opacity
@@ -82,4 +84,6 @@ void main() {
     v_gamma_scale = extrude_length_without_perspective / extrude_length_with_perspective;
 
     v_width2 = vec2(outset, inset);
+
+    v_color = color * opacity;
 }

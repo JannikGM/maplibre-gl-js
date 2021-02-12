@@ -1,21 +1,16 @@
 varying vec3 v_data;
 
-#pragma mapbox: define highp vec4 color
+varying mediump vec4 v_color;
+varying mediump vec4 v_stroke_color;
+
 #pragma mapbox: define mediump float radius
 #pragma mapbox: define lowp float blur
-#pragma mapbox: define lowp float opacity
-#pragma mapbox: define highp vec4 stroke_color
 #pragma mapbox: define mediump float stroke_width
-#pragma mapbox: define lowp float stroke_opacity
 
 void main() {
-    #pragma mapbox: initialize highp vec4 color
     #pragma mapbox: initialize mediump float radius
     #pragma mapbox: initialize lowp float blur
-    #pragma mapbox: initialize lowp float opacity
-    #pragma mapbox: initialize highp vec4 stroke_color
     #pragma mapbox: initialize mediump float stroke_width
-    #pragma mapbox: initialize lowp float stroke_opacity
 
     vec2 extrude = v_data.xy;
     float extrude_length = length(extrude);
@@ -31,7 +26,7 @@ void main() {
         extrude_length - radius / (radius + stroke_width)
     );
 
-    gl_FragColor = opacity_t * mix(color * opacity, stroke_color * stroke_opacity, color_t);
+    gl_FragColor = opacity_t * mix(v_color, v_stroke_color, color_t);
 
 #ifdef OVERDRAW_INSPECTOR
     gl_FragColor = vec4(1.0);

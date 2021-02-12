@@ -9,6 +9,9 @@ attribute vec2 a_pos;
 
 varying vec3 v_data;
 
+varying mediump vec4 v_color;
+varying mediump vec4 v_stroke_color;
+
 #pragma mapbox: define highp vec4 color
 #pragma mapbox: define mediump float radius
 #pragma mapbox: define lowp float blur
@@ -61,4 +64,7 @@ void main(void) {
     lowp float antialiasblur = 1.0 / u_device_pixel_ratio / (radius + stroke_width);
 
     v_data = vec3(extrude.x, extrude.y, antialiasblur);
+
+    v_color = color * opacity;
+    v_stroke_color = stroke_color * stroke_opacity;
 }
