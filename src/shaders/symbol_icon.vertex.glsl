@@ -26,7 +26,8 @@ uniform bool u_pitch_with_map;
 uniform vec2 u_texsize;
 
 varying vec2 v_tex;
-varying float v_fade_opacity;
+
+varying lowp float v_combined_opacity;
 
 #pragma mapbox: define lowp float opacity
 
@@ -90,5 +91,7 @@ void main() {
     v_tex = a_tex / u_texsize;
     vec2 fade_opacity = unpack_opacity(a_fade_opacity);
     float fade_change = fade_opacity[1] > 0.5 ? u_fade_change : -u_fade_change;
-    v_fade_opacity = max(0.0, min(1.0, fade_opacity[0] + fade_change));
+    float interpolated_fade_opacity = max(0.0, min(1.0, fade_opacity[0] + fade_change));
+
+    v_combined_opacity = opacity * interpolated_fade_opacity;
 }

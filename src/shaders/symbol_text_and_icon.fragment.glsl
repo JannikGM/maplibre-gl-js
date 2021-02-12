@@ -14,23 +14,20 @@ varying vec4 v_data1;
 
 #pragma mapbox: define highp vec4 fill_color
 #pragma mapbox: define highp vec4 halo_color
-#pragma mapbox: define lowp float opacity
 #pragma mapbox: define lowp float halo_width
 #pragma mapbox: define lowp float halo_blur
 
 void main() {
     #pragma mapbox: initialize highp vec4 fill_color
     #pragma mapbox: initialize highp vec4 halo_color
-    #pragma mapbox: initialize lowp float opacity
     #pragma mapbox: initialize lowp float halo_width
     #pragma mapbox: initialize lowp float halo_blur
 
-    float fade_opacity = v_data1[2];
+    lowp float combined_opacity = v_data1[2];
 
     if (v_data1.w == ICON) {
         vec2 tex_icon = v_data0.zw;
-        lowp float alpha = opacity * fade_opacity;
-        gl_FragColor = texture2D(u_texture_icon, tex_icon) * alpha;
+        gl_FragColor = texture2D(u_texture_icon, tex_icon) * combined_opacity;
 
 #ifdef OVERDRAW_INSPECTOR
         gl_FragColor = vec4(1.0);
@@ -60,7 +57,7 @@ void main() {
     highp float gamma_scaled = gamma * gamma_scale;
     highp float alpha = smoothstep(buff - gamma_scaled, buff + gamma_scaled, dist);
 
-    gl_FragColor = color * (alpha * opacity * fade_opacity);
+    gl_FragColor = color * (alpha * combined_opacity);
 
 #ifdef OVERDRAW_INSPECTOR
     gl_FragColor = vec4(1.0);

@@ -111,5 +111,5 @@ void main() {
     float interpolated_fade_opacity = max(0.0, min(1.0, fade_opacity[0] + fade_change));
 
     v_data0 = a_tex / u_texsize;
-    v_data1 = vec3(gamma_scale, size, interpolated_fade_opacity);
+    v_data1 = vec3(gamma_scale, size, opacity * interpolated_fade_opacity);
 }

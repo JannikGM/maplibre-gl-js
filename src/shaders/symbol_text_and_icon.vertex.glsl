@@ -112,5 +112,5 @@ void main() {
 
     v_data0.xy = a_tex / u_texsize;
     v_data0.zw = a_tex / u_texsize_icon;
-    v_data1 = vec4(gamma_scale, size, interpolated_fade_opacity, is_sdf);
+    v_data1 = vec4(gamma_scale, size, opacity * interpolated_fade_opacity, is_sdf);
 }
