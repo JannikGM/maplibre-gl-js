@@ -15,6 +15,8 @@ import type Actor from '../util/actor';
 import type {Callback} from '../types/callback';
 import type {GeoJSON, GeoJSONFeature} from '@mapbox/geojson-types';
 import type {GeoJSONSourceSpecification, PromoteIdSpecification} from '../style-spec/types';
+import geobuf from 'geobuf';
+import Pbf from 'pbf';
 
 /**
  * A source containing GeoJSON.
@@ -272,7 +274,7 @@ class GeoJSONSource extends Evented implements Source {
             options.request = this.map._requestManager.transformRequest(browser.resolveURL(data), ResourceType.Source);
             options.request.collectResourceTiming = this._collectResourceTiming;
         } else {
-            options.data = JSON.stringify(data);
+            options.data = geobuf.encode(data, new Pbf());
         }
 
         // target {this.type}.loadData rather than literally geojson.loadData,

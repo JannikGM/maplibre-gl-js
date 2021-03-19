@@ -11,6 +11,9 @@ import geojsonvt from 'geojson-vt';
 import assert from 'assert';
 import VectorTileWorkerSource from './vector_tile_worker_source';
 import {createExpression} from '../style-spec/expression';
+import geobuf from 'geobuf';
+import Pbf from 'pbf';
+
 
 import type {
     WorkerTileParameters,
@@ -280,6 +283,13 @@ class GeoJSONWorkerSource extends VectorTileWorkerSource {
         } else if (typeof params.data === 'string') {
             try {
                 return callback(null, JSON.parse(params.data));
+            } catch (e) {
+                return callback(new Error(`Input data given to '${params.source}' is not a valid GeoJSON object.`));
+            }
+        } else if (typeof params.data === 'object') {
+            try {
+                const data = geobuf.decode(new Pbf(params.data))
+                return callback(null, data);
             } catch (e) {
                 return callback(new Error(`Input data given to '${params.source}' is not a valid GeoJSON object.`));
             }
